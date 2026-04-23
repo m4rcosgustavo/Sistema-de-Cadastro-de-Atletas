@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Tarefas</h2>
+
+<form method="GET">
+    <input type="text" name="filtro" placeholder="Buscar tarefa">
+    <button type="submit">Filtrar</button>
+</form>
+
+<a href="/criar">Nova Tarefa</a>
+
+<ul>
+    {% for t in tarefas %}
+        <li>
+            {{ t.titulo }}
+            <a href="/editar/{{ t.id }}">Editar</a>
+            <a href="/deletar/{{ t.id }}">Excluir</a>
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
