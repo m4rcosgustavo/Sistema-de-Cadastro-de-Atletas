@@ -1,107 +1,113 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
-app.secret_key = '123'
+app.secret_key = 'chave_secreta_para_sessao'
 
-usuarios = []
-tarefas = []
-id_counter = 1
+# Simulação de banco de dados
+usuarios = {}
+atletas = []
+proximo_id = 1
 
-# ---------------- HOME ----------------
 @app.route('/')
 def index():
     return render_template('index.html')
 
-
-# ---------------- CADASTRO ----------------
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
-        user = request.form['user']
+        nome = request.form['nome']
         senha = request.form['senha']
-
-        usuarios.append({'user': user, 'senha': senha})
-        return redirect('/login')
-
+        if nome not in usuarios:
+            usuarios[nome] = senha
+            return redirect(url_for('login'))
+        else:
+            return 'Usuário já existe!'
     return render_template('cadastro.html')
 
-
-# ---------------- LOGIN ----------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        user = request.form['user']
+        nome = request.form['nome']
         senha = request.form['senha']
-
-        for u in usuarios:
-            if u['user'] == user and u['senha'] == senha:
-                session['user'] = user
-                return redirect('/dashboard')
-
+        if usuarios.get(nome) == senha:
+            session['usuario'] = nome
+            return redirect(url_for('atletas'))
+        else:
+            return 'Credenciais inválidas!'
     return render_template('login.html')
 
-
-# ---------------- LOGOUT ----------------
 @app.route('/logout')
 def logout():
-    session.pop('user', None)
-    return redirect('/')
+    session.pop('usuario', None)
+    return redirect(url_for('index'))
 
+@app.route('/atletas')
+def atletas():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
 
-# ---------------- DASHBOARD ----------------
-@app.route('/dashboard')
-def dashboard():
-    if 'user' not in session:
-        return redirect('/login')
-
-    filtro = request.args.get('filtro')
-
-    if filtro:
-        lista = [t for t in tarefas if filtro.lower() in t['titulo'].lower()]
+    # ✅ STRING DE CONSULTA (filtro por nome)
+    busca = request.args.get('busca', '')
+    if busca:
+        atletas_filtrados = [a for a in atletas if busca.lower() in a['nome'].lower()]
     else:
-        lista = tarefas
+        atletas_filtrados = atletas
 
-    return render_template('dashboard.html', tarefas=lista)
+    return render_template('atletas.html', atletas=atletas_filtrados, busca=busca)
 
+# ✅ ROTA PARAMETRIZADA PARA DETALHES
+@app.route('/atleta/<int:id>')
+def detalhe_atleta(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    atleta = next((a for a in atletas if a['id'] == id), None)
+    if atleta:
+        return render_template('atleta_detalhe.html', atleta=atleta)
+    return 'Atleta não encontrado', 404
 
-# ---------------- CRIAR ----------------
-@app.route('/criar', methods=['GET', 'POST'])
-def criar():
-    global id_counter
+@app.route('/add', methods=['GET', 'POST'])
+def add_atleta():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
+    global proximo_id
+    if request.method == 'POST':
+        atleta = {
+            'id': proximo_id,
+            'nome': request.form['nome'],
+            'idade': int(request.form['idade']),
+            'esporte': request.form['esporte']
+        }
+        atletas.append(atleta)
+        proximo_id += 1
+        return redirect(url_for('atletas'))
+    return render_template('form_atleta.html', atleta=None)
+
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit_atleta(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
+    atleta = next((a for a in atletas if a['id'] == id), None)
+    if not atleta:
+        return 'Atleta não encontrado', 404
 
     if request.method == 'POST':
-        titulo = request.form['titulo']
+        atleta['nome'] = request.form['nome']
+        atleta['idade'] = int(request.form['idade'])
+        atleta['esporte'] = request.form['esporte']
+        return redirect(url_for('atletas'))
 
-        tarefas.append({
-            'id': id_counter,
-            'titulo': titulo
-        })
+    return render_template('form_atleta.html', atleta=atleta)
 
-        id_counter += 1
-        return redirect('/dashboard')
+@app.route('/delete/<int:id>')
+def delete_atleta(id):
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
 
-    return render_template('criar_item.html')
-
-
-# ---------------- EDITAR ----------------
-@app.route('/editar/<int:id>', methods=['GET', 'POST'])
-def editar(id):
-    for t in tarefas:
-        if t['id'] == id:
-            if request.method == 'POST':
-                t['titulo'] = request.form['titulo']
-                return redirect('/dashboard')
-
-            return render_template('editar_item.html', tarefa=t)
-
-
-# ---------------- DELETAR ----------------
-@app.route('/deletar/<int:id>')
-def deletar(id):
-    global tarefas
-    tarefas = [t for t in tarefas if t['id'] != id]
-    return redirect('/dashboard')
-
+    global atletas
+    atletas = [a for a in atletas if a['id'] != id]
+    return redirect(url_for('atletas'))
 
 if __name__ == '__main__':
     app.run(debug=True)

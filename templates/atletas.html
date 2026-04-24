@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Atletas Cadastrados</h1>
+
+<form method="GET" action="/atletas">
+    <input type="text" name="busca" placeholder="Filtrar por nome" value="{{ busca }}">
+    <button type="submit">Filtrar</button>
+</form>
+
+<ul>
+    {% for atleta in atletas %}
+        <li>
+            {{ atleta.nome }} - {{ atleta.esporte }} ({{ atleta.idade }} anos)
+            <a href="/atleta/{{ atleta.id }}">Ver detalhes</a>
+            <a href="/edit/{{ atleta.id }}">Editar</a>
+            <a href="/delete/{{ atleta.id }}">Remover</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

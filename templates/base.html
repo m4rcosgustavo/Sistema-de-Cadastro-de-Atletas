@@ -2,28 +2,24 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Projeto Flask</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Atletas</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-
-<nav>
-    <div class="links">
-        <a href="/">Home</a>
-        <a href="/dashboard">Dashboard</a>
-    </div>
-
-    <div class="links">
-        <a href="/login">Login</a>
-        <a href="/cadastro">Cadastro</a>
-        <a href="/logout">Logout</a>
-    </div>
-</nav>
-
-<div class="container">
-    {% block content %}{% endblock %}
-</div>
-
+    <nav>
+        <a href="/">Início</a>
+        {% if session.usuario %}
+            <a href="/atletas">Atletas</a>
+            <a href="/add">Novo Atleta</a>
+            <a href="/logout">Logout ({{ session.usuario }})</a>
+        {% else %}
+            <a href="/login">Login</a>
+            <a href="/cadastro">Cadastro</a>
+        {% endif %}
+    </nav>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 </body>
 </html>
