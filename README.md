@@ -151,41 +151,7 @@ A aplicação utiliza um arquivo CSS externo para estilização, garantindo sepa
 
 ---
 
-## 10. Como Executar o Projeto
-
-1. Clonar o repositório:
-
-```id="pzn7nx"
-git clone https://github.com/seu-usuario/seu-repositorio.git
-```
-
-2. Acessar a pasta do projeto:
-
-```id="xy9tnt"
-cd seu-repositorio
-```
-
-3. Instalar as dependências:
-
-```id="yo4qsr"
-pip install flask
-```
-
-4. Executar a aplicação:
-
-```id="o0te8n"
-python app.py
-```
-
-5. Acessar no navegador:
-
-```id="s4z1q9"
-http://127.0.0.1:5000/
-```
-
----
-
-## 11. Requisitos Atendidos
+## 10. Requisitos Atendidos
 
 * Criação de rotas
 * Redirecionamento entre páginas
@@ -200,7 +166,7 @@ http://127.0.0.1:5000/
 
 ---
 
-## 12. Integrantes
+## 11. Integrantes
 
 * Marcos Gustavo
 * Heloisa Pereira
@@ -209,7 +175,7 @@ http://127.0.0.1:5000/
 
 ---
 
-## 13. Considerações Finais
+## 12. Considerações Finais
 
 O desenvolvimento deste projeto permitiu aplicar na prática diversos conceitos importantes do desenvolvimento web com Flask. Foi possível compreender melhor a estrutura de uma aplicação web, a organização de rotas, o uso de templates e a interação com formulários.
 
