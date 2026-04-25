@@ -1,20 +1,160 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="welcome">
-    <h2>Bem-vindo ao Sistema de Cadastro de Atletas</h2>
-    <p>Este sistema permite gerenciar atletas de forma simples e eficiente.</p>
-    
-    {% if not session.usuario %}
-        <div class="buttons">
-            <a href="/login" class="btn">Fazer Login</a>
-            <a href="/cadastro" class="btn">Cadastrar-se</a>
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Gerencie seus Atletas com Facilidade</h1>
+        <p class="hero-subtitle">O sistema completo para cadastro, organização e gestão de atletas em um só lugar.</p>
+        {% if not session.usuario %}
+            <div class="hero-buttons">
+                <a href="/cadastro" class="btn btn-primary">Começar Agora</a>
+                <a href="/login" class="btn btn-secondary">Já tenho conta</a>
+            </div>
+        {% else %}
+            <div class="hero-buttons">
+                <a href="/atletas" class="btn btn-primary">Ver Meus Atletas</a>
+                <a href="/add" class="btn btn-secondary">Adicionar Atleta</a>
+            </div>
+        {% endif %}
+    </div>
+    <div class="hero-image">
+        <img src="{{ url_for('static', filename='atletas.jpg') }}" alt="Atletas em ação">
+    </div>
+</section>
+
+<!-- Benefícios / Diferenciais -->
+<section class="beneficios">
+    <h2>Por que usar nosso sistema?</h2>
+    <div class="beneficios-grid">
+        <div class="beneficio-card">
+            <div class="beneficio-icon">
+                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#1E4DB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                </svg>
+            </div>
+            <h3>Cadastro Rápido</h3>
+            <p>Adicione atletas em segundos com nosso formulário intuitivo e simples.</p>
         </div>
-    {% else %}
-        <div class="buttons">
-            <a href="/atletas" class="btn">Ver Atletas</a>
-            <a href="/add" class="btn">Adicionar Atleta</a>
+        <div class="beneficio-card">
+            <div class="beneficio-icon">
+                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#1E4DB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"/>
+                    <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+            </div>
+            <h3>Edição Fácil</h3>
+            <p>Atualize informações dos atletas quando necessário, sem complicações.</p>
         </div>
-    {% endif %}
-</div>
+        <div class="beneficio-card">
+            <div class="beneficio-icon">
+                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#1E4DB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+            </div>
+            <h3>Busca Rápida</h3>
+            <p>Filtre atletas por nome e encontre o que precisa em instantes.</p>
+        </div>
+        <div class="beneficio-card">
+            <div class="beneficio-icon">
+                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#1E4DB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+            </div>
+            <h3>Segurança</h3>
+            <p>Sistema com autenticação de usuários para proteger seus dados.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Como Funciona -->
+<section class="como-funciona">
+    <h2>Como Funciona?</h2>
+    <div class="passos">
+        <div class="passo">
+            <div class="passo-numero">1</div>
+            <div class="passo-conteudo">
+                <h3>Crie sua conta</h3>
+                <p>Faça seu cadastro gratuitamente e tenha acesso ao sistema.</p>
+            </div>
+        </div>
+        <div class="passo">
+            <div class="passo-numero">2</div>
+            <div class="passo-conteudo">
+                <h3>Cadastre atletas</h3>
+                <p>Adicione nome, idade e esporte de cada atleta que deseja gerenciar.</p>
+            </div>
+        </div>
+        <div class="passo">
+            <div class="passo-numero">3</div>
+            <div class="passo-conteudo">
+                <h3>Gerencie</h3>
+                <p>Visualize, edite ou remova atletas conforme sua necessidade.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Estatísticas -->
+<section class="estatisticas">
+    <div class="estatistica-item">
+        <div class="estatistica-numero">100%</div>
+        <div class="estatistica-texto">Gratuito</div>
+    </div>
+    <div class="estatistica-item">
+        <div class="estatistica-numero">24 horas</div>
+        <div class="estatistica-texto">Disponível</div>
+    </div>
+    <div class="estatistica-item">
+        <div class="estatistica-numero">Fácil</div>
+        <div class="estatistica-texto">de usar</div>
+    </div>
+</section>
+
+<!-- Depoimentos -->
+<section class="depoimentos">
+    <h2>O que dizem nossos usuários</h2>
+    <div class="depoimentos-grid">
+        <div class="depoimento-card">
+            <p class="depoimento-texto">"Sistema incrível! Facilitou muito a gestão dos atletas da minha escolinha de futebol."</p>
+            <div class="depoimento-autor">
+                <strong>Carlos Silva</strong>
+                <span>Técnico de Futebol</span>
+            </div>
+        </div>
+        <div class="depoimento-card">
+            <p class="depoimento-texto">"Interface intuitiva e fácil de usar. Recomendo para qualquer profissional de educação física."</p>
+            <div class="depoimento-autor">
+                <strong>Ana Oliveira</strong>
+                <span>Professora de Educação Física</span>
+            </div>
+        </div>
+        <div class="depoimento-card">
+            <p class="depoimento-texto">"Organização perfeita! Agora consigo manter todos os dados dos meus atletas em um só lugar."</p>
+            <div class="depoimento-autor">
+                <strong>Rafael Costa</strong>
+                <span>Preparador Físico</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Final -->
+<section class="cta-final">
+    <div class="cta-conteudo">
+        <h2>Pronto para começar?</h2>
+        <p>Junte-se a dezenas de profissionais que já organizam seus atletas com nosso sistema.</p>
+        {% if not session.usuario %}
+            <a href="/cadastro" class="btn btn-primary btn-grande">Cadastre-se Gratuitamente</a>
+        {% else %}
+            <a href="/atletas" class="btn btn-primary btn-grande">Acessar Meus Atletas</a>
+        {% endif %}
+    </div>
+</section>
 {% endblock %}
