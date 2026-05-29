@@ -140,7 +140,12 @@ def login():
     return render_template('login.html')
 @app.route('/logout')
 def logout():
+
+    # Remove usuario da sessao
     session.pop('usuario', None)
+    # Limpa completamente a sessao
+    session.clear()
+
     return redirect(url_for('index'))
 
 # ========== CRUD ATLETAS ==========
