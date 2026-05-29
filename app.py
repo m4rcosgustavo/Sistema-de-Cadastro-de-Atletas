@@ -61,9 +61,18 @@ def cadastro():
         cursor = conn.cursor()
 
         cursor.execute(
-            "INSERT INTO usuarios (nome, senha) VALUES (?, ?)",
-            (nome, senha)
-        )
+    "SELECT * FROM usuarios WHERE nome = ?",
+    (nome,)
+)
+
+        usuario_existente = cursor.fetchone()
+
+        if usuario_existente:
+            conn.close()
+            return render_template(
+                'cadastro.html',
+                erro='Usuario ja cadastrado.'
+            )
 
         conn.commit()
         conn.close()
