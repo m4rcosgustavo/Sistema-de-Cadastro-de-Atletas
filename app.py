@@ -9,6 +9,30 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
+def init_db():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS usuarios (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL UNIQUE,
+            senha TEXT NOT NULL
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS atletas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            idade INTEGER NOT NULL,
+            esporte TEXT NOT NULL
+        )
+    """)
+
+    conn.commit()
+    conn.close()
+
 # Banco de dados fake
 usuarios = {}
 lista_atletas = []  # ← Mudei de "atletas" para "lista_atletas"
