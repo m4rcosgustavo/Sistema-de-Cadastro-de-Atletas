@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Detalhes do Atleta</h2>
+
+<div class="detalhes">
+    <p><strong>ID:</strong> {{ atleta.id }}</p>
+    <p><strong>Nome:</strong> {{ atleta.nome }}</p>
+    <p><strong>Idade:</strong> {{ atleta.idade }} anos</p>
+    <p><strong>Esporte:</strong> {{ atleta.esporte }}</p>
+</div>
+
+<div class="botoes">
+    <a href="/edit/{{ atleta.id }}" class="btn">Editar</a>
+    <a href="/delete/{{ atleta.id }}" class="btn remover" onclick="return confirm('Tem certeza?')">Remover</a>
+    <a href="/atletas" class="btn">Voltar</a>
+</div>
+{% endblock %}
