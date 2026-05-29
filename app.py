@@ -88,15 +88,35 @@ def cadastro():
         return redirect(url_for('login'))
 
     return render_template('cadastro.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        nome = request.form['nome']
-        senha = request.form['senha']
-        if usuarios.get(nome) == senha:
+
+        nome = request.form['nome'].strip()
+        senha = request.form['senha'].strip()
+
+        conn = get_db()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT * FROM usuarios WHERE nome = ? AND senha = ?",
+            (nome, senha)
+        )
+
+        usuario = cursor.fetchone()
+
+        conn.close()
+
+        if usuario:
             session['usuario'] = nome
             return redirect(url_for('atletas'))
-        return 'Credenciais inválidas!'
+
+        return render_template(
+            'login.html',
+            erro='Credenciais inválidas!'
+        )
+
     return render_template('login.html')
 
 @app.route('/logout')
