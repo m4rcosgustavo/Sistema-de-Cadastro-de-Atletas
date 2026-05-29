@@ -4,6 +4,11 @@ import sqlite3
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_para_sessao'
 
+def get_db():
+    conn = sqlite3.connect('banco.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
 # Banco de dados fake
 usuarios = {}
 lista_atletas = []  # ← Mudei de "atletas" para "lista_atletas"
