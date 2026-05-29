@@ -51,17 +51,31 @@ def cadastro():
         nome = request.form['nome'].strip()
         senha = request.form['senha'].strip()
 
-        # Validação de campos vazios
+        # Campos vazios
         if not nome or not senha:
             return render_template(
                 'cadastro.html',
                 erro='Preencha todos os campos.'
             )
 
+        # Tamanho mínimo do nome
+        if len(nome) < 3:
+            return render_template(
+                'cadastro.html',
+                erro='O nome deve ter pelo menos 3 caracteres.'
+            )
+
+        # Tamanho mínimo da senha
+        if len(senha) < 3:
+            return render_template(
+                'cadastro.html',
+                erro='A senha deve ter pelo menos 3 caracteres.'
+            )
+
         conn = get_db()
         cursor = conn.cursor()
 
-        # Verifica se usuário já existe
+        # Verifica se já existe
         cursor.execute(
             "SELECT * FROM usuarios WHERE nome = ?",
             (nome,)
@@ -73,10 +87,10 @@ def cadastro():
             conn.close()
             return render_template(
                 'cadastro.html',
-                erro='Usuario ja cadastrado.'
+                erro='Usuário já cadastrado.'
             )
 
-        # Salva no banco
+        # Salva usuário
         cursor.execute(
             "INSERT INTO usuarios (nome, senha) VALUES (?, ?)",
             (nome, senha)
@@ -88,7 +102,6 @@ def cadastro():
         return redirect(url_for('login'))
 
     return render_template('cadastro.html')
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
