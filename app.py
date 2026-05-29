@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
 
+
 app = Flask(__name__)
 app.secret_key = 'chave_secreta_para_sessao'
 
@@ -143,4 +144,5 @@ def delete_atleta(id):
     return redirect(url_for('atletas'))
 
 if __name__ == '__main__':
+    init_db()
     app.run(debug=True)
