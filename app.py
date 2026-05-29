@@ -47,12 +47,23 @@ def index():
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
-        nome = request.form['nome']
-        senha = request.form['senha']
-        if nome not in usuarios:
-            usuarios[nome] = senha
-            return redirect(url_for('login'))
-        return 'Usuário já existe!'
+
+        nome = request.form['nome'].strip()
+        senha = request.form['senha'].strip()
+
+        conn = get_db()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "INSERT INTO usuarios (nome, senha) VALUES (?, ?)",
+            (nome, senha)
+        )
+
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('login'))
+
     return render_template('cadastro.html')
 
 @app.route('/login', methods=['GET', 'POST'])
