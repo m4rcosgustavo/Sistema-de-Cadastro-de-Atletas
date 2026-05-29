@@ -146,6 +146,7 @@ def logout():
 # ========== CRUD ATLETAS ==========
 @app.route('/atletas')
 def atletas():
+    # Verifica se usuario esta logado
     if 'usuario' not in session:
         return redirect(url_for('login'))
     
