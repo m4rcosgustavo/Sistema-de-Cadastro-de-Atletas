@@ -35,8 +35,8 @@ def init_db():
     conn.close()
 
 # Banco de dados fake
-usuarios = {}
-lista_atletas = []  # ← Mudei de "atletas" para "lista_atletas"
+# usuarios = {}
+lista_atletas = []  
 proximo_id = 1
 
 @app.route('/')
