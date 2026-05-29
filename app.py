@@ -109,6 +109,13 @@ def login():
         nome = request.form['nome'].strip()
         senha = request.form['senha'].strip()
 
+        # Verifica campos vazios
+        if not nome or not senha:
+            return render_template(
+                'login.html',
+                erro='Preencha todos os campos.'
+            )
+
         conn = get_db()
         cursor = conn.cursor()
 
@@ -131,7 +138,6 @@ def login():
         )
 
     return render_template('login.html')
-
 @app.route('/logout')
 def logout():
     session.pop('usuario', None)
