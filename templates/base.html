@@ -4,32 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Cadastro de Atletas</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+
     <header>
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Sistema de Cadastro de Atletas</h1>
     </header>
-    
+
     <nav>
-        <a href="/">Início</a>
-        {% if session.usuario %}
-            <a href="/atletas">Atletas</a>
-            <a href="/add">Novo Atleta</a>
-            <a href="/logout">Logout ({{ session.usuario }})</a>
+        <a href="{{ url_for('index') }}">Início</a>
+
+        {% if 'usuario' in session %}
+            <a href="{{ url_for('atletas') }}">Atletas</a>
+            <a href="{{ url_for('add_atleta') }}">Novo Atleta</a>
+            <a href="{{ url_for('logout') }}">
+                Logout ({{ session['usuario'] }})
+            </a>
         {% else %}
-            <a href="/login">Login</a>
-            <a href="/cadastro">Cadastro</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('cadastro') }}">Cadastro</a>
         {% endif %}
     </nav>
-    
+
     <main>
-        {% block content %}{% endblock %}
+
+        {% if erro %}
+            <div class="erro">
+                {{ erro }}
+            </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+
     </main>
-    
+
     <footer>
-        <p>Projeto Flask - Equipe: Marcos Gustavo, Heloisa Pereira, Jullyane Sandra, Maria Luiza</p>
+        <p>
+            Projeto Flask - Equipe:
+            Marcos Gustavo,
+            Heloísa Pereira,
+            Jullyane Sandra,
+            Maria Luiza
+        </p>
     </footer>
+
 </body>
 </html>

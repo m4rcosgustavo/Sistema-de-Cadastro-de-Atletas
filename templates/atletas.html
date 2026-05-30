@@ -1,37 +1,91 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <h2>Atletas Cadastrados</h2>
 
-<!-- FORMULÁRIO DE FILTRO -->
-<form method="GET" action="/atletas" class="filtro">
-    <input type="text" name="busca" placeholder="Filtrar por nome" value="{{ busca }}">
-    <button type="submit">Filtrar</button>
+<form method="GET" action="{{ url_for('atletas') }}" class="filtro">
+
+    <input
+        type="text"
+        name="busca"
+        placeholder="Filtrar por nome"
+        value="{{ busca }}"
+    >
+
+    <button type="submit">
+        Filtrar
+    </button>
+
     {% if busca %}
-        <a href="/atletas" class="btn limpar">Limpar</a>
+        <a href="{{ url_for('atletas') }}" class="btn limpar">
+            Limpar
+        </a>
     {% endif %}
+
 </form>
 
 {% if atletas %}
-    <ul class="lista-atletas">
-        {% for atleta in atletas %}
-        <li>
-            <div class="atleta-info">
-                <strong>{{ atleta.nome }}</strong> - {{ atleta.esporte }} ({{ atleta.idade }} anos)
-            </div>
-            <div class="atleta-acoes">
-                <a href="/atleta/{{ atleta.id }}" class="ver">Ver</a>
-                <a href="/edit/{{ atleta.id }}" class="editar">Editar</a>
-                <a href="/delete/{{ atleta.id }}" class="remover" onclick="return confirm('Tem certeza?')">Remover</a>
-            </div>
-        </li>
-        {% endfor %}
-    </ul>
+
+<ul class="lista-atletas">
+
+    {% for atleta in atletas %}
+
+    <li>
+
+        <div class="atleta-info">
+            <strong>{{ atleta.nome }}</strong>
+            - {{ atleta.esporte }}
+            ({{ atleta.idade }} anos)
+        </div>
+
+        <div class="atleta-acoes">
+
+            <a
+                href="{{ url_for('detalhe_atleta', id=atleta.id) }}"
+                class="ver"
+            >
+                Ver
+            </a>
+
+            <a
+                href="{{ url_for('edit_atleta', id=atleta.id) }}"
+                class="editar"
+            >
+                Editar
+            </a>
+
+            <a
+                href="{{ url_for('delete_atleta', id=atleta.id) }}"
+                class="remover"
+                onclick="return confirm('Tem certeza que deseja remover este atleta?')"
+            >
+                Remover
+            </a>
+
+        </div>
+
+    </li>
+
+    {% endfor %}
+
+</ul>
+
 {% else %}
-    <div class="sem-atletas">
-        <p>Nenhum atleta cadastrado.</p>
-        <a href="/add" class="btn">Adicionar primeiro atleta</a>
-    </div>
+
+<div class="sem-atletas">
+
+    <p>Nenhum atleta cadastrado.</p>
+
+    <a
+        href="{{ url_for('add_atleta') }}"
+        class="btn"
+    >
+        Adicionar primeiro atleta
+    </a>
+
+</div>
+
 {% endif %}
 
 {% endblock %}

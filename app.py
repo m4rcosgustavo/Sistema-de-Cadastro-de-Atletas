@@ -207,9 +207,7 @@ def detalhe_atleta(id):
 def add_atleta():
 
     if 'usuario' not in session:
-        return redirect(url_for('login')
-
-)
+        return redirect(url_for('login'))
 
     if request.method == 'POST':
 

@@ -52,7 +52,6 @@ Além de solucionar um problema real, o projeto contribui para a prática dos co
 - SQLite3
 - HTML5
 - CSS3
-- Jinja2 (Templates)
 
 ---
 
@@ -243,6 +242,7 @@ Atividades desenvolvidas:
 - Criação da tabela `usuarios`;
 - Criação da tabela `atletas`;
 - Testes de criação e funcionamento do banco de dados.
+- Além da implementação da estrutura inicial do banco de dados, também realizou a revisão final da aplicação, testes de integração entre os módulos e validação dos requisitos obrigatórios do projeto.
 
 Principais funcionalidades implementadas:
 
