@@ -247,20 +247,50 @@ def add_atleta():
 # Editar (UPDATE) - rota parametrizada
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_atleta(id):
+
     if 'usuario' not in session:
         return redirect(url_for('login'))
-    
-    atleta = next((a for a in lista_atletas if a['id'] == id), None)  # ← mudado
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+
+        cursor.execute(
+            """
+            UPDATE atletas
+            SET nome = ?, idade = ?, esporte = ?
+            WHERE id = ?
+            """,
+            (
+                request.form['nome'],
+                request.form['idade'],
+                request.form['esporte'],
+                id
+            )
+        )
+
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('atletas'))
+
+    cursor.execute(
+        "SELECT * FROM atletas WHERE id = ?",
+        (id,)
+    )
+
+    atleta = cursor.fetchone()
+
+    conn.close()
+
     if not atleta:
         return 'Atleta não encontrado', 404
-    
-    if request.method == 'POST':
-        atleta['nome'] = request.form['nome']
-        atleta['idade'] = int(request.form['idade'])
-        atleta['esporte'] = request.form['esporte']
-        return redirect(url_for('atletas'))
-    
-    return render_template('form_atleta.html', atleta=atleta)
+
+    return render_template(
+        'form_atleta.html',
+        atleta=atleta
+    )
 
 # Remover (DELETE) - rota parametrizada
 @app.route('/delete/<int:id>')
