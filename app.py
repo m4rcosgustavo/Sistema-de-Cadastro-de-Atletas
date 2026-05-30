@@ -155,18 +155,31 @@ def logout():
 # ========== CRUD ATLETAS ==========
 @app.route('/atletas')
 def atletas():
-    # Verifica se usuario esta logado
     if 'usuario' not in session:
         return redirect(url_for('login'))
-    
-    # String de consulta (filtro)
-    busca = request.args.get('busca', '')
+
+    busca = request.args.get('busca', '').strip()
+
+    conn = get_db()
+    cursor = conn.cursor()
+
     if busca:
-        atletas_filtrados = [a for a in lista_atletas if busca.lower() in a['nome'].lower()]
+        cursor.execute(
+            "SELECT * FROM atletas WHERE nome LIKE ?",
+            ('%' + busca + '%',)
+        )
     else:
-        atletas_filtrados = lista_atletas
-    
-    return render_template('atletas.html', atletas=atletas_filtrados, busca=busca)
+        cursor.execute("SELECT * FROM atletas")
+
+    atletas_filtrados = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        'atletas.html',
+        atletas=atletas_filtrados,
+        busca=busca
+    )
 
 # Rota parametrizada - mostrar detalhes
 @app.route('/atleta/<int:id>')
