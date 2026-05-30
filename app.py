@@ -292,14 +292,23 @@ def edit_atleta(id):
         atleta=atleta
     )
 
-# Remover (DELETE) - rota parametrizada
 @app.route('/delete/<int:id>')
 def delete_atleta(id):
+
     if 'usuario' not in session:
         return redirect(url_for('login'))
-    
-    global lista_atletas  # ← mudado
-    lista_atletas = [a for a in lista_atletas if a['id'] != id]  # ← mudado
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "DELETE FROM atletas WHERE id = ?",
+        (id,)
+    )
+
+    conn.commit()
+    conn.close()
+
     return redirect(url_for('atletas'))
 
 if __name__ == '__main__':
