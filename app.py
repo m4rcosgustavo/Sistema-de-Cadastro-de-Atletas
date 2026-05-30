@@ -34,11 +34,6 @@ def init_db():
     conn.commit()
     conn.close()
 
-# Banco de dados fake
-# usuarios = {}
-lista_atletas = []  
-proximo_id = 1
-
 @app.route('/')
 def index():
     return render_template('index.html')
