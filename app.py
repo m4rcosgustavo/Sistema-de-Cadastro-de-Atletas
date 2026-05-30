@@ -181,14 +181,30 @@ def atletas():
         busca=busca
     )
 
-# Rota parametrizada - mostrar detalhes
 @app.route('/atleta/<int:id>')
 def detalhe_atleta(id):
+
     if 'usuario' not in session:
         return redirect(url_for('login'))
-    atleta = next((a for a in lista_atletas if a['id'] == id), None)
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM atletas WHERE id = ?",
+        (id,)
+    )
+
+    atleta = cursor.fetchone()
+
+    conn.close()
+
     if atleta:
-        return render_template('atleta_detalhe.html', atleta=atleta)
+        return render_template(
+            'atleta_detalhe.html',
+            atleta=atleta
+        )
+
     return 'Atleta não encontrado', 404
 
 # Salvar (CREATE)
