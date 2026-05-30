@@ -194,21 +194,39 @@ def detalhe_atleta(id):
 # Salvar (CREATE)
 @app.route('/add', methods=['GET', 'POST'])
 def add_atleta():
+
     if 'usuario' not in session:
-        return redirect(url_for('login'))
-    
-    global proximo_id
+        return redirect(url_for('login')
+
+)
+
     if request.method == 'POST':
-        atleta = {
-            'id': proximo_id,
-            'nome': request.form['nome'],
-            'idade': int(request.form['idade']),
-            'esporte': request.form['esporte']
-        }
-        lista_atletas.append(atleta)  # ← mudado para lista_atletas
-        proximo_id += 1
+
+        nome = request.form['nome']
+        idade = request.form['idade']
+        esporte = request.form['esporte']
+
+        conn = get_db()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            INSERT INTO atletas
+            (nome, idade, esporte)
+            VALUES (?, ?, ?)
+            """,
+            (nome, idade, esporte)
+        )
+
+        conn.commit()
+        conn.close()
+
         return redirect(url_for('atletas'))
-    return render_template('form_atleta.html', atleta=None)
+
+    return render_template(
+        'form_atleta.html',
+        atleta=None
+    )
 
 # Editar (UPDATE) - rota parametrizada
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
