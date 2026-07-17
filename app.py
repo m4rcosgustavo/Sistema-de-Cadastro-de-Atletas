@@ -137,25 +137,12 @@ def atletas():
 @login_required
 def detalhe_atleta(id):
 
-    conn = get_db()
-    cursor = conn.cursor()
+    atleta = Atleta.query.get_or_404(id)
 
-    cursor.execute(
-        "SELECT * FROM atletas WHERE id = ?",
-        (id,)
+    return render_template(
+        'atleta_detalhe.html',
+        atleta=atleta
     )
-
-    atleta = cursor.fetchone()
-
-    conn.close()
-
-    if atleta:
-        return render_template(
-            'atleta_detalhe.html',
-            atleta=atleta
-        )
-
-    return 'Atleta não encontrado', 404
 
 # Salvar (CREATE)
 @app.route('/add', methods=['GET', 'POST'])
@@ -164,24 +151,14 @@ def add_atleta():
 
     if request.method == 'POST':
 
-        nome = request.form['nome']
-        idade = request.form['idade']
-        esporte = request.form['esporte']
-
-        conn = get_db()
-        cursor = conn.cursor()
-
-        cursor.execute(
-            """
-            INSERT INTO atletas
-            (nome, idade, esporte)
-            VALUES (?, ?, ?)
-            """,
-            (nome, idade, esporte)
+        novo_atleta = Atleta(
+            nome=request.form['nome'],
+            idade=request.form['idade'],
+            esporte=request.form['esporte']
         )
 
-        conn.commit()
-        conn.close()
+        db.session.add(novo_atleta)
+        db.session.commit()
 
         return redirect(url_for('atletas'))
 
