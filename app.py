@@ -52,32 +52,22 @@ def cadastro():
                 erro='A senha deve ter pelo menos 3 caracteres.'
             )
 
-        conn = get_db()
-        cursor = conn.cursor()
-
-        # Verifica se já existe
-        cursor.execute(
-            "SELECT * FROM usuarios WHERE nome = ?",
-            (nome,)
-        )
-
-        usuario_existente = cursor.fetchone()
+        usuario_existente = User.query.filter_by(nome=nome).first()
 
         if usuario_existente:
-            conn.close()
             return render_template(
                 'cadastro.html',
                 erro='Usuário já cadastrado.'
             )
 
         # Salva usuário
-        cursor.execute(
-            "INSERT INTO usuarios (nome, senha) VALUES (?, ?)",
-            (nome, senha)
+        novo_usuario = User(
+            nome=nome,
+            senha=senha
         )
 
-        conn.commit()
-        conn.close()
+        db.session.add(novo_usuario)
+        db.session.commit()
 
         return redirect(url_for('login'))
 
