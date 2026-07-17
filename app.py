@@ -93,7 +93,7 @@ def login():
 
         usuario = User.query.filter_by(nome=nome).first()
 
-        if usuario and usuario.senha == senha:
+        if usuario and check_password_hash(usuario.senha, senha):
             login_user(usuario)
             return redirect(url_for('atletas'))
 
