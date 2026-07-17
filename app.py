@@ -111,7 +111,7 @@ def login():
         conn.close()
 
         if usuario:
-            session['usuario'] = nome
+            login_user(usuario)
             return redirect(url_for('atletas'))
 
         return render_template(
@@ -123,17 +123,16 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
 
-    # Remove usuario da sessao
-    session.pop('usuario', None)
-    # Limpa completamente a sessao
-    session.clear()
+    logout_user()
 
     return redirect(url_for('index'))
 
 # ========== CRUD ATLETAS ==========
 @app.route('/atletas')
+@login_required
 def atletas():
     if 'usuario' not in session:
         return redirect(url_for('login'))
@@ -162,6 +161,7 @@ def atletas():
     )
 
 @app.route('/atleta/<int:id>')
+@login_required
 def detalhe_atleta(id):
 
     if 'usuario' not in session:
@@ -189,6 +189,7 @@ def detalhe_atleta(id):
 
 # Salvar (CREATE)
 @app.route('/add', methods=['GET', 'POST'])
+@login_required
 def add_atleta():
 
     if 'usuario' not in session:
@@ -224,6 +225,7 @@ def add_atleta():
 
 # Editar (UPDATE) - rota parametrizada
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
 def edit_atleta(id):
 
     if 'usuario' not in session:
@@ -271,6 +273,7 @@ def edit_atleta(id):
     )
 
 @app.route('/delete/<int:id>')
+@login_required
 def delete_atleta(id):
 
     if 'usuario' not in session:
