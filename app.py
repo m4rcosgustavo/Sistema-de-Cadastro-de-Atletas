@@ -172,47 +172,23 @@ def add_atleta():
 @login_required
 def edit_atleta(id):
 
-    conn = get_db()
-    cursor = conn.cursor()
+    atleta = Atleta.query.get_or_404(id)
 
     if request.method == 'POST':
 
-        cursor.execute(
-            """
-            UPDATE atletas
-            SET nome = ?, idade = ?, esporte = ?
-            WHERE id = ?
-            """,
-            (
-                request.form['nome'],
-                request.form['idade'],
-                request.form['esporte'],
-                id
-            )
-        )
+        atleta.nome = request.form['nome']
+        atleta.idade = request.form['idade']
+        atleta.esporte = request.form['esporte']
 
-        conn.commit()
-        conn.close()
+        db.session.commit()
 
         return redirect(url_for('atletas'))
-
-    cursor.execute(
-        "SELECT * FROM atletas WHERE id = ?",
-        (id,)
-    )
-
-    atleta = cursor.fetchone()
-
-    conn.close()
-
-    if not atleta:
-        return 'Atleta não encontrado', 404
 
     return render_template(
         'form_atleta.html',
         atleta=atleta
     )
-
+    
 @app.route('/delete/<int:id>')
 @login_required
 def delete_atleta(id):
