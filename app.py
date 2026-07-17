@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, login_user, logout_user, login_required
-from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -18,7 +17,7 @@ login_manager.login_view = "login"
 login_manager.login_message = "Faça login para acessar esta página."
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return db.session.get(User, int(user_id))
 
 @app.route('/')
 def index():

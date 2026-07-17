@@ -5,19 +5,23 @@
 <section class="hero">
     <div class="hero-content">
         <h1>Gerencie seus Atletas com Facilidade</h1>
-        <p class="hero-subtitle">O sistema completo para cadastro, organização e gestão de atletas em um só lugar.</p>
-        {% if not session.usuario %}
+        <p class="hero-subtitle">
+            O sistema completo para cadastro, organização e gestão de atletas em um só lugar.
+        </p>
+
+        {% if not current_user.is_authenticated %}
             <div class="hero-buttons">
-                <a href="/cadastro" class="btn btn-primary">Começar Agora</a>
-                <a href="/login" class="btn btn-secondary">Já tenho conta</a>
+                <a href="{{ url_for('cadastro') }}" class="btn btn-primary">Começar Agora</a>
+                <a href="{{ url_for('login') }}" class="btn btn-secondary">Já tenho conta</a>
             </div>
         {% else %}
             <div class="hero-buttons">
-                <a href="/atletas" class="btn btn-primary">Ver Meus Atletas</a>
-                <a href="/add" class="btn btn-secondary">Adicionar Atleta</a>
+                <a href="{{ url_for('atletas') }}" class="btn btn-primary">Ver Meus Atletas</a>
+                <a href="{{ url_for('add_atleta') }}" class="btn btn-secondary">Adicionar Atleta</a>
             </div>
         {% endif %}
     </div>
+
     <div class="hero-image">
         <img src="{{ url_for('static', filename='atletas.jpg') }}" alt="Atletas em ação">
     </div>
@@ -26,6 +30,7 @@
 <!-- Benefícios / Diferenciais -->
 <section class="beneficios">
     <h2>Por que usar nosso sistema?</h2>
+
     <div class="beneficios-grid">
         <div class="beneficio-card">
             <div class="beneficio-icon">
@@ -40,6 +45,7 @@
             <h3>Cadastro Rápido</h3>
             <p>Adicione atletas em segundos com nosso formulário intuitivo e simples.</p>
         </div>
+
         <div class="beneficio-card">
             <div class="beneficio-icon">
                 <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#1E4DB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -50,6 +56,7 @@
             <h3>Edição Fácil</h3>
             <p>Atualize informações dos atletas quando necessário, sem complicações.</p>
         </div>
+
         <div class="beneficio-card">
             <div class="beneficio-icon">
                 <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#1E4DB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -60,6 +67,7 @@
             <h3>Busca Rápida</h3>
             <p>Filtre atletas por nome e encontre o que precisa em instantes.</p>
         </div>
+
         <div class="beneficio-card">
             <div class="beneficio-icon">
                 <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#1E4DB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -76,6 +84,7 @@
 <!-- Como Funciona -->
 <section class="como-funciona">
     <h2>Como Funciona?</h2>
+
     <div class="passos">
         <div class="passo">
             <div class="passo-numero">1</div>
@@ -84,6 +93,7 @@
                 <p>Faça seu cadastro gratuitamente e tenha acesso ao sistema.</p>
             </div>
         </div>
+
         <div class="passo">
             <div class="passo-numero">2</div>
             <div class="passo-conteudo">
@@ -91,6 +101,7 @@
                 <p>Adicione nome, idade e esporte de cada atleta que deseja gerenciar.</p>
             </div>
         </div>
+
         <div class="passo">
             <div class="passo-numero">3</div>
             <div class="passo-conteudo">
@@ -107,10 +118,12 @@
         <div class="estatistica-numero">100%</div>
         <div class="estatistica-texto">Gratuito</div>
     </div>
+
     <div class="estatistica-item">
         <div class="estatistica-numero">24 horas</div>
         <div class="estatistica-texto">Disponível</div>
     </div>
+
     <div class="estatistica-item">
         <div class="estatistica-numero">Fácil</div>
         <div class="estatistica-texto">de usar</div>
@@ -120,23 +133,35 @@
 <!-- Depoimentos -->
 <section class="depoimentos">
     <h2>O que dizem nossos usuários</h2>
+
     <div class="depoimentos-grid">
         <div class="depoimento-card">
-            <p class="depoimento-texto">"Sistema incrível! Facilitou muito a gestão dos atletas da minha escolinha de futebol."</p>
+            <p class="depoimento-texto">
+                "Sistema incrível! Facilitou muito a gestão dos atletas da minha escolinha de futebol."
+            </p>
+
             <div class="depoimento-autor">
                 <strong>Carlos Silva</strong>
                 <span>Técnico de Futebol</span>
             </div>
         </div>
+
         <div class="depoimento-card">
-            <p class="depoimento-texto">"Interface intuitiva e fácil de usar. Recomendo para qualquer profissional de educação física."</p>
+            <p class="depoimento-texto">
+                "Interface intuitiva e fácil de usar. Recomendo para qualquer profissional de educação física."
+            </p>
+
             <div class="depoimento-autor">
                 <strong>Ana Oliveira</strong>
                 <span>Professora de Educação Física</span>
             </div>
         </div>
+
         <div class="depoimento-card">
-            <p class="depoimento-texto">"Organização perfeita! Agora consigo manter todos os dados dos meus atletas em um só lugar."</p>
+            <p class="depoimento-texto">
+                "Organização perfeita! Agora consigo manter todos os dados dos meus atletas em um só lugar."
+            </p>
+
             <div class="depoimento-autor">
                 <strong>Rafael Costa</strong>
                 <span>Preparador Físico</span>
@@ -150,11 +175,17 @@
     <div class="cta-conteudo">
         <h2>Pronto para começar?</h2>
         <p>Junte-se a dezenas de profissionais que já organizam seus atletas com nosso sistema.</p>
-        {% if not session.usuario %}
-            <a href="/cadastro" class="btn btn-primary btn-grande">Cadastre-se Gratuitamente</a>
+
+        {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('cadastro') }}" class="btn btn-primary btn-grande">
+                Cadastre-se Gratuitamente
+            </a>
         {% else %}
-            <a href="/atletas" class="btn btn-primary btn-grande">Acessar Meus Atletas</a>
+            <a href="{{ url_for('atletas') }}" class="btn btn-primary btn-grande">
+                Acessar Meus Atletas
+            </a>
         {% endif %}
     </div>
 </section>
+
 {% endblock %}

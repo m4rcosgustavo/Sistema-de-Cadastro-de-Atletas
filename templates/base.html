@@ -17,11 +17,11 @@
     <nav>
         <a href="{{ url_for('index') }}">Início</a>
 
-        {% if 'usuario' in session %}
+        {% if current_user.is_authenticated %}
             <a href="{{ url_for('atletas') }}">Atletas</a>
             <a href="{{ url_for('add_atleta') }}">Novo Atleta</a>
             <a href="{{ url_for('logout') }}">
-                Logout ({{ session['usuario'] }})
+                Logout ({{ current_user.nome }})
             </a>
         {% else %}
             <a href="{{ url_for('login') }}">Login</a>

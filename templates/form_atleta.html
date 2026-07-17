@@ -14,6 +14,6 @@
     <input type="text" name="esporte" value="{{ atleta.esporte if atleta else '' }}" required>
     
     <button type="submit">Salvar</button>
-    <a href="/atletas" class="cancelar">Cancelar</a>
+    <a href="{{ url_for('atletas') }}" class="cancelar">Cancelar</a>
 </form>
 {% endblock %}
