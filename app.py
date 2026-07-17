@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_login import LoginManager, login_user, logout_user, login_required
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 app = Flask(__name__)
@@ -61,9 +62,11 @@ def cadastro():
             )
 
         # Salva usuário
+        senha_hash = generate_password_hash(senha)
+
         novo_usuario = User(
             nome=nome,
-            senha=senha
+            senha=senha_hash
         )
 
         db.session.add(novo_usuario)
