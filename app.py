@@ -88,19 +88,9 @@ def login():
                 erro='Preencha todos os campos.'
             )
 
-        conn = get_db()
-        cursor = conn.cursor()
+        usuario = User.query.filter_by(nome=nome).first()
 
-        cursor.execute(
-            "SELECT * FROM usuarios WHERE nome = ? AND senha = ?",
-            (nome, senha)
-        )
-
-        usuario = cursor.fetchone()
-
-        conn.close()
-
-        if usuario:
+        if usuario and usuario.senha == senha:
             login_user(usuario)
             return redirect(url_for('atletas'))
 
