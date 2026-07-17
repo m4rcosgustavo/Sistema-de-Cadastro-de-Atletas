@@ -9,7 +9,7 @@ app.secret_key = 'chave_secreta_para_sessao'
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-from models import db, User
+from models import db, User, Atleta
 
 db.init_app(app)
 login_manager = LoginManager()
@@ -118,25 +118,17 @@ def logout():
 @login_required
 def atletas():
 
-    busca = request.args.get('busca', '').strip()
-
-    conn = get_db()
-    cursor = conn.cursor()
+    busca = request.args.get("busca", "").strip()
 
     if busca:
-        cursor.execute(
-            "SELECT * FROM atletas WHERE nome LIKE ?",
-            ('%' + busca + '%',)
-        )
+        atletas_filtrados = Atleta.query.filter(
+            Atleta.nome.like(f"%{busca}%")
+        ).all()
     else:
-        cursor.execute("SELECT * FROM atletas")
-
-    atletas_filtrados = cursor.fetchall()
-
-    conn.close()
+        atletas_filtrados = Atleta.query.all()
 
     return render_template(
-        'atletas.html',
+        "atletas.html",
         atletas=atletas_filtrados,
         busca=busca
     )
