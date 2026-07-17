@@ -114,8 +114,6 @@ def logout():
 @app.route('/atletas')
 @login_required
 def atletas():
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
 
     busca = request.args.get('busca', '').strip()
 
@@ -144,9 +142,6 @@ def atletas():
 @login_required
 def detalhe_atleta(id):
 
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
-
     conn = get_db()
     cursor = conn.cursor()
 
@@ -171,9 +166,6 @@ def detalhe_atleta(id):
 @app.route('/add', methods=['GET', 'POST'])
 @login_required
 def add_atleta():
-
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
 
     if request.method == 'POST':
 
@@ -255,9 +247,6 @@ def edit_atleta(id):
 @app.route('/delete/<int:id>')
 @login_required
 def delete_atleta(id):
-
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
 
     conn = get_db()
     cursor = conn.cursor()
