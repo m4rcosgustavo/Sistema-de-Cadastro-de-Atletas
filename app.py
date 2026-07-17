@@ -188,21 +188,15 @@ def edit_atleta(id):
         'form_atleta.html',
         atleta=atleta
     )
-    
+
 @app.route('/delete/<int:id>')
 @login_required
 def delete_atleta(id):
 
-    conn = get_db()
-    cursor = conn.cursor()
+    atleta = Atleta.query.get_or_404(id)
 
-    cursor.execute(
-        "DELETE FROM atletas WHERE id = ?",
-        (id,)
-    )
-
-    conn.commit()
-    conn.close()
+    db.session.delete(atleta)
+    db.session.commit()
 
     return redirect(url_for('atletas'))
 
