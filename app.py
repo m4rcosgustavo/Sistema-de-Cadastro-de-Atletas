@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+from flask_login import LoginManager, login_user, logout_user, login_required
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -7,9 +8,16 @@ app.secret_key = 'chave_secreta_para_sessao'
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-from models import db
+from models import db, User
 
 db.init_app(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+login_manager.login_message = "Faça login para acessar esta página."
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 @app.route('/')
 def index():
