@@ -200,9 +200,6 @@ def add_atleta():
 @login_required
 def edit_atleta(id):
 
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
-
     conn = get_db()
     cursor = conn.cursor()
 
