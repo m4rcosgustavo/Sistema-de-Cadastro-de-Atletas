@@ -1,67 +1,88 @@
-# Sistema de Cadastro de Atletas (Flask + SQLite3)
+# Sistema de Cadastro de Atletas
 
 ## 1. Introdução
 
-Este projeto consiste na continuação do Projeto 1 da disciplina de Desenvolvimento Web com Flask.
+O Sistema de Cadastro de Atletas é uma aplicação web desenvolvida com Flask que permite realizar o gerenciamento de atletas por meio de um ambiente simples, intuitivo e seguro.
 
-Nesta segunda versão, a aplicação foi aprimorada com a implementação de persistência de dados utilizando SQLite3 e autenticação de usuários através de sessões Flask, tornando o sistema mais seguro e funcional.
+Nesta versão do projeto, foram implementados recursos de autenticação de usuários, persistência de dados utilizando SQLite com SQLAlchemy, controle de sessões através do Flask-Login e um sistema completo de gerenciamento de atletas (CRUD).
 
-A aplicação tem como objetivo auxiliar no cadastro e gerenciamento de atletas, permitindo que usuários autenticados realizem operações completas de CRUD (Create, Read, Update e Delete).
-
----
-
-## 2. Objetivo Geral
-
-Desenvolver uma aplicação web funcional utilizando Flask, SQLite3 e sessões de usuário, aplicando os principais conceitos de desenvolvimento web estudados durante a disciplina.
+O sistema permite que apenas usuários autenticados possam acessar as funcionalidades internas da aplicação, garantindo maior segurança aos dados cadastrados.
 
 ---
 
-## 3. Objetivos Específicos
+# 2. Equipe
 
-- Implementar autenticação de usuários com login e logout;
-- Utilizar sessões para controle de acesso;
-- Persistir dados utilizando banco de dados SQLite3;
-- Desenvolver CRUD completo para gerenciamento de atletas;
-- Utilizar templates com herança;
-- Aplicar métodos HTTP GET e POST;
-- Utilizar rotas parametrizadas e query strings;
-- Organizar o projeto seguindo boas práticas de desenvolvimento.
+- Marcos Gustavo
+- Heloísa Pereira
+- Jullyane Sandra
+- Maria Luiza
 
 ---
 
-## 4. Problema Abordado
+# 3. Objetivo Geral
 
-Em ambientes esportivos, escolares ou recreativos, muitas vezes não existe um sistema simples para armazenar informações de atletas de forma organizada e acessível.
-
-O uso de planilhas ou registros manuais pode dificultar a atualização, consulta e manutenção dessas informações.
+Desenvolver uma aplicação web utilizando Flask, SQLAlchemy e Flask-Login para realizar o cadastro e gerenciamento de atletas, aplicando os principais conceitos estudados durante a disciplina de Desenvolvimento Web.
 
 ---
 
-## 5. Justificativa
+# 4. Objetivos Específicos
 
-O sistema foi desenvolvido para facilitar o gerenciamento de atletas por meio de uma aplicação web simples, intuitiva e acessível.
-
-Além de solucionar um problema real, o projeto contribui para a prática dos conceitos de desenvolvimento web, banco de dados e autenticação de usuários.
+- Desenvolver autenticação de usuários;
+- Implementar login e logout;
+- Controlar sessões utilizando Flask-Login;
+- Persistir informações em banco de dados SQLite;
+- Desenvolver operações de CRUD;
+- Aplicar templates utilizando herança;
+- Utilizar rotas GET e POST;
+- Implementar busca utilizando Query String;
+- Utilizar rotas parametrizadas;
+- Organizar o projeto seguindo boas práticas.
 
 ---
 
-## 6. Tecnologias Utilizadas
+# 5. Problema Abordado
+
+Em diversos ambientes esportivos, como escolas, academias e projetos sociais, o cadastro de atletas ainda é realizado de forma manual ou utilizando planilhas eletrônicas.
+
+Esse tipo de gerenciamento dificulta a organização das informações, aumenta a possibilidade de erros e torna o processo de consulta e atualização dos dados mais lento.
+
+Diante desse cenário, foi desenvolvido um sistema web que permite centralizar o cadastro dos atletas em uma única plataforma, facilitando o gerenciamento das informações.
+
+---
+
+# 6. Justificativa
+
+A criação deste sistema busca oferecer uma solução simples, organizada e segura para o gerenciamento de atletas.
+
+Além de resolver um problema real, o projeto permitiu colocar em prática diversos conteúdos estudados durante a disciplina, como desenvolvimento web com Flask, banco de dados relacionais, autenticação de usuários, arquitetura MVC, utilização de ORM através do SQLAlchemy e organização de aplicações web.
+
+---
+
+# 7. Tecnologias Utilizadas
 
 - Python
 - Flask
-- SQLite3
+- Flask-Login
+- Flask-SQLAlchemy
+- SQLAlchemy
+- SQLite
 - HTML5
 - CSS3
+- Jinja2
+- Werkzeug
 
 ---
 
-## 7. Estrutura do Projeto
+# 8. Estrutura do Projeto
 
 ```text
-Sistema-de-Cadastro-de-Atletas-Profissionais-e-Iniciantes/
+Sistema-de-Cadastro-de-Atletas/
+
 │
 ├── app.py
+├── models.py
 ├── banco.db
+├── requirements.txt
 ├── README.md
 │
 ├── static/
@@ -80,238 +101,279 @@ Sistema-de-Cadastro-de-Atletas-Profissionais-e-Iniciantes/
 │
 ├── env/
 └── __pycache__/
-
 ```
-## 8. Banco de Dados SQLite3
 
-O sistema utiliza SQLite3 para armazenamento persistente das informações.
+---
 
-### Tabela de Usuários
+# 9. Banco de Dados
 
-Campos:
+O projeto utiliza SQLite juntamente com SQLAlchemy para persistência das informações.
+
+Foram implementadas as seguintes tabelas:
+
+## Usuários
 
 - id
 - nome
 - senha
 
-### Tabela de Atletas
+A senha é armazenada de forma criptografada utilizando o Werkzeug.
 
-Campos:
+## Atletas
 
 - id
 - nome
 - idade
 - esporte
 
-O banco é inicializado automaticamente através da função `init_db()`, responsável pela criação das tabelas caso ainda não existam.
+## Esportes
+
+- id
+- nome
+
+As tabelas são criadas automaticamente através do método:
+
+```python
+db.create_all()
+```
+
+quando a aplicação é iniciada.
 
 ---
 
-## 9. Sistema de Sessões
+# 10. Sistema de Autenticação
 
-O projeto utiliza sessões Flask para controlar a autenticação dos usuários.
+O sistema utiliza Flask-Login para controlar a autenticação dos usuários.
 
-### Funcionalidades
+As principais funcionalidades implementadas foram:
 
-- Login de usuários;
-- Criação de sessão após autenticação;
-- Restrição de acesso às páginas internas;
-- Logout com encerramento da sessão;
-- Redirecionamento de usuários não autenticados.
+- Cadastro de usuários;
+- Login;
+- Logout;
+- Controle de sessões;
+- Proteção das rotas utilizando `@login_required`;
+- Redirecionamento automático para login quando necessário;
+- Armazenamento seguro das senhas utilizando hash.
 
 ---
 
-## 10. Funcionalidades do Sistema
+# 11. Funcionalidades
 
-### Cadastro de Usuários
+## Cadastro de usuários
 
-Permite que novos usuários criem uma conta para acessar o sistema.
+Permite criar novos usuários para utilização do sistema.
 
-### Login e Logout
+---
 
-Usuários cadastrados podem acessar o sistema através de autenticação.
+## Login
 
-### Gerenciamento de Atletas
+Permite autenticar usuários cadastrados.
 
-A aplicação permite:
+---
 
-- Cadastrar atletas;
-- Visualizar atletas cadastrados;
-- Consultar detalhes de um atleta;
-- Editar informações;
-- Excluir registros.
+## Logout
 
-### Busca de Atletas
+Finaliza a sessão do usuário.
 
-O sistema possui filtro de busca utilizando query string.
+---
+
+## Cadastro de atletas
+
+Permite adicionar novos atletas.
+
+---
+
+## Listagem
+
+Exibe todos os atletas cadastrados.
+
+---
+
+## Busca
+
+Permite pesquisar atletas pelo nome utilizando Query String.
 
 Exemplo:
 
-```text
+```
 /atletas?busca=joao
 ```
-## 11. Rotas da Aplicação
-
-| Rota           | Método   | Descrição            |
-| -------------- | -------- | -------------------- |
-| `/`            | GET      | Página inicial       |
-| `/cadastro`    | GET/POST | Cadastro de usuários |
-| `/login`       | GET/POST | Login                |
-| `/logout`      | GET      | Logout               |
-| `/atletas`     | GET      | Listagem de atletas  |
-| `/atleta/<id>` | GET      | Detalhes do atleta   |
-| `/add`         | GET/POST | Cadastro de atleta   |
-| `/edit/<id>`   | GET/POST | Edição de atleta     |
-| `/delete/<id>` | GET      | Remoção de atleta    |
 
 ---
 
-## 12. Requisitos Atendidos
+## Detalhes
 
-* Rotas Flask
-* Redirecionamentos
-* Templates com herança
-* Arquivos estáticos
-* Métodos GET e POST
-* Query Strings
-* Rotas parametrizadas
-* Cadastro de usuários
-* Login e Logout
-* Sessões Flask
-* Banco de Dados SQLite3
-* CRUD completo
-* Controle de acesso por autenticação
+Visualiza todas as informações de um atleta.
 
 ---
 
-## 13. Como Executar o Projeto
+## Edição
 
-### Clonar o repositório
+Permite alterar os dados cadastrados.
+
+---
+
+## Exclusão
+
+Remove atletas do banco de dados.
+
+---
+
+# 12. Rotas
+
+| Rota | Método | Descrição |
+|------|---------|-----------|
+| / | GET | Página inicial |
+| /cadastro | GET/POST | Cadastro de usuários |
+| /login | GET/POST | Login |
+| /logout | GET | Logout |
+| /atletas | GET | Lista atletas |
+| /atleta/<id> | GET | Detalhes do atleta |
+| /add | GET/POST | Novo atleta |
+| /edit/<id> | GET/POST | Editar atleta |
+| /delete/<id> | GET | Excluir atleta |
+
+---
+
+# 13. Requisitos Atendidos
+
+- Flask
+- Templates com herança
+- HTML
+- CSS
+- SQLAlchemy
+- SQLite
+- Flask-Login
+- CRUD completo
+- Login
+- Logout
+- Controle de sessões
+- Banco de dados
+- Query Strings
+- Rotas parametrizadas
+- Métodos GET
+- Métodos POST
+- Proteção das rotas
+- Hash de senha
+- Interface responsiva
+
+---
+
+# 14. Principais Problemas Técnicos Encontrados
+
+Durante o desenvolvimento do projeto foram encontrados alguns desafios técnicos.
+
+O primeiro foi a migração da aplicação que utilizava SQLite puro para SQLAlchemy. Essa alteração exigiu mudanças na forma de realizar consultas, inserções, atualizações e exclusões no banco de dados, tornando o código mais organizado e de fácil manutenção.
+
+Outro desafio foi a implementação da autenticação de usuários. Para solucionar esse problema foi utilizada a biblioteca Flask-Login, responsável pelo gerenciamento das sessões e proteção das rotas da aplicação.
+
+Também foi necessário implementar a criptografia das senhas dos usuários utilizando as funções `generate_password_hash()` e `check_password_hash()` da biblioteca Werkzeug, garantindo maior segurança ao sistema.
+
+Por fim, houve a reorganização da estrutura do projeto, separando os modelos de banco de dados em um arquivo específico (`models.py`), tornando a aplicação mais organizada e próxima das boas práticas de desenvolvimento.
+
+---
+
+# 15. Como Executar
+
+## Clonar o projeto
 
 ```bash
-git clone https://github.com/seu-usuario/Sistema-de-Cadastro-de-Atletas-Profissionais-e-Iniciantes
+git clone https://github.com/seu-repositorio.git
 ```
 
-### Entrar na pasta
+## Entrar na pasta
 
 ```bash
-cd Sistema-de-Cadastro-de-Atletas-Profissionais-e-Iniciantes
+cd Sistema-de-Cadastro-de-Atletas
 ```
 
-### Ativar ambiente virtual
+## Criar ambiente virtual
+
+```bash
+python -m venv env
+```
+
+## Ativar ambiente
+
+Windows
 
 ```bash
 env\Scripts\activate
 ```
 
-### Executar aplicação
+Linux
+
+```bash
+source env/bin/activate
+```
+
+## Instalar dependências
+
+```bash
+pip install -r requirements.txt
+```
+
+## Executar
 
 ```bash
 python app.py
 ```
 
-A aplicação estará disponível em:
+O sistema ficará disponível em:
 
-```text
+```
 http://127.0.0.1:5000
 ```
 
 ---
 
-## 14. Integrantes
+# 16. Divisão das Responsabilidades
 
-* Marcos Gustavo
-* Heloisa Pereira
-* Jullyane Sandra
-* Maria Luiza
+## Marcos Gustavo — Banco de Dados
+
+- Modelagem do banco de dados;
+- Configuração do SQLAlchemy;
+- Criação das tabelas;
+- Estruturação dos modelos;
+- Testes da persistência dos dados.
 
 ---
 
-## 15. Divisão de Responsabilidades da Equipe
+## Jullyane Sandra — Cadastro de Usuários
 
-### Marcos Gustavo – Banco de Dados SQLite3
+- Cadastro de usuários;
+- Validação dos campos;
+- Verificação de usuários duplicados;
+- Mensagens de erro;
+- Testes do cadastro.
 
-Responsável pela implementação da estrutura de banco de dados da aplicação.
+---
 
-Atividades desenvolvidas:
+## Maria Luiza — Login e Controle de Sessões
 
-- Adição da biblioteca `sqlite3` ao projeto;
-- Criação do arquivo `banco.db`;
-- Implementação da função `get_db()` para conexão com o banco de dados;
-- Implementação da função `init_db()` para inicialização automática do banco;
-- Criação da tabela `usuarios`;
-- Criação da tabela `atletas`;
-- Testes de criação e funcionamento do banco de dados.
-- Além da implementação da estrutura inicial do banco de dados, também realizou a revisão final da aplicação, testes de integração entre os módulos e validação dos requisitos obrigatórios do projeto.
+- Implementação do Flask-Login;
+- Login;
+- Logout;
+- Proteção das rotas;
+- Criptografia das senhas utilizando Werkzeug;
+- Controle das sessões dos usuários.
 
-Principais funcionalidades implementadas:
+---
 
-- Persistência de dados utilizando SQLite3;
-- Criação automática das tabelas do sistema;
-- Estruturação do banco de dados para usuários e atletas;
-- Integração inicial do banco de dados com a aplicação Flask;
-- Preparação da base para armazenamento permanente das informações.
+## Heloísa Pereira — CRUD de Atletas
 
-### Jullyane Sandra – Sistema de Usuários
+- Cadastro;
+- Listagem;
+- Busca;
+- Visualização dos detalhes;
+- Edição;
+- Exclusão dos atletas;
+- Testes do CRUD completo.
 
-Responsável pela implementação e gerenciamento do cadastro de usuários da aplicação.
+---
 
-Atividades desenvolvidas:
+# 17. Considerações Finais
 
-- Alteração do sistema de cadastro para armazenamento utilizando SQLite3;
-- Implementação de validação dos campos obrigatórios;
-- Prevenção de cadastros duplicados;
-- Exibição de mensagens de erro para o usuário;
-- Realização de testes no processo de cadastro.
+O projeto permitiu aplicar na prática os principais conceitos estudados durante a disciplina de Desenvolvimento Web, envolvendo desenvolvimento com Flask, banco de dados relacionais, autenticação de usuários, controle de sessões, organização de código e utilização de ORM através do SQLAlchemy.
 
-Principais funcionalidades implementadas:
-
-- Cadastro de novos usuários;
-- Validação de dados informados;
-- Armazenamento persistente no banco de dados;
-- Controle de integridade dos registros cadastrados.
-
-### Maria Luiza – Login e Sessões
-
-Responsável pela implementação do sistema de autenticação e controle de acesso da aplicação.
-
-Atividades desenvolvidas:
-
-- Implementação do login utilizando dados armazenados no SQLite3;
-- Verificação de usuário e senha durante a autenticação;
-- Criação e gerenciamento de sessões com Flask;
-- Implementação da funcionalidade de logout;
-- Proteção das rotas restritas do sistema;
-- Redirecionamento de usuários não autenticados para a página de login.
-
-Principais funcionalidades implementadas:
-
-- Autenticação de usuários;
-- Controle de acesso por sessão;
-- Encerramento seguro da sessão (logout);
-- Restrição de acesso às páginas internas;
-- Validação de credenciais armazenadas no banco de dados.
-
-### Heloisa Pereira – CRUD dos Atletas
-
-Responsável pela implementação e adaptação do sistema de gerenciamento de atletas utilizando SQLite3.
-
-Atividades desenvolvidas:
-
-- Implementação do cadastro de atletas utilizando comandos `INSERT`;
-- Implementação da listagem de atletas utilizando consultas `SELECT`;
-- Implementação da edição de atletas utilizando comandos `UPDATE`;
-- Implementação da exclusão de atletas utilizando comandos `DELETE`;
-- Ajuste do sistema de busca por nome utilizando query strings;
-- Realização de testes para validação do CRUD completo.
-
-Principais funcionalidades implementadas:
-
-- Cadastro de novos atletas;
-- Visualização dos atletas cadastrados;
-- Consulta de detalhes dos atletas;
-- Atualização de informações dos registros;
-- Remoção de atletas do sistema;
-- Integração do CRUD com o banco de dados SQLite3.
-
-
+O resultado foi uma aplicação funcional, organizada, segura e preparada para futuras melhorias, como relacionamentos entre tabelas, cadastro de modalidades esportivas, upload de imagens dos atletas e diferentes níveis de permissão de usuários.
