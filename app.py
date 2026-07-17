@@ -1,38 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-import sqlite3
+from models import db, User, Atleta, Esporte
 
 
 app = Flask(__name__)
-app.secret_key = 'chave_secreta_para_sessao'
+app.secret_key = "chave_secreta_para_sessao"
 
-def get_db():
-    conn = sqlite3.connect('banco.db')
-    conn.row_factory = sqlite3.Row
-    return conn
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-def init_db():
-    conn = get_db()
-    cursor = conn.cursor()
+db.init_app(app)
 
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS usuarios (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL UNIQUE,
-            senha TEXT NOT NULL
-        )
-    """)
-
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS atletas (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL,
-            idade INTEGER NOT NULL,
-            esporte TEXT NOT NULL
-        )
-    """)
-
-    conn.commit()
-    conn.close()
+with app.app_context():
+    db.create_all()
 
 @app.route('/')
 def index():
@@ -305,5 +284,4 @@ def delete_atleta(id):
     return redirect(url_for('atletas'))
 
 if __name__ == '__main__':
-    init_db()
     app.run(debug=True)
