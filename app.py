@@ -281,6 +281,8 @@ def delete_atleta(id):
 
     return redirect(url_for('atletas'))
 
-if __name__ == '__main__':
-    init_db()
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+
     app.run(debug=True)
