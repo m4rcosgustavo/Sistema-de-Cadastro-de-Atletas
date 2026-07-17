@@ -7,8 +7,9 @@ app.secret_key = 'chave_secreta_para_sessao'
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///banco.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-db = SQLAlchemy(app)
+from models import db
 
+db.init_app(app)
 
 @app.route('/')
 def index():
